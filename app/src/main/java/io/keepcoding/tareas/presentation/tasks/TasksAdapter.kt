@@ -15,6 +15,8 @@ import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import kotlinx.android.synthetic.main.item_task.view.*
 
+
+
 class TasksAdapter(
     private val onFinished: (task: Task) -> Unit
 ) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(TaskDiffUtil()) {
@@ -36,6 +38,12 @@ class TasksAdapter(
                 cardContentText.text = task.content
 
                 taskFinishedCheck.isChecked = task.isFinished
+
+                /*val dateCreateAt = Date.from(task.createdAt)
+                val formatter = SimpleDateFormat("EEE, MMM d, ''yy")
+                val formattedDate = formatter.format(dateCreatAt)
+                "EEE, MMM d, ''yy" -> Wed, Jul 4, '01*/
+                cardDateCreated.text = "Created on: ${task.createdAt.toString()}"
 
                 if (task.isFinished) {
                     applyStrikeThrough(cardContentText, task.content)

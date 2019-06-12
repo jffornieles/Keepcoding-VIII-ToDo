@@ -14,7 +14,9 @@ class TaskRepositoryImpl(
 ) : TaskRepository {
 
     override suspend fun getAll(): List<Task> =
-        taskDao.getAll().map { taskMapper.map(it) }
+        taskDao.getAll()
+                .map { taskMapper.map(it) }
+                .sortedWith(compareByDescending { it.isHighPriority })
 
     override suspend fun getTaskById(id: Long): Task =
         taskMapper.map(taskDao.getTaskById(id))
