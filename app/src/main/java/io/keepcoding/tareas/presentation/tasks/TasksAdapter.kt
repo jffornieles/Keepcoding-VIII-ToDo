@@ -1,6 +1,7 @@
 package io.keepcoding.tareas.presentation.tasks
 
 import android.animation.ValueAnimator
+import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StrikethroughSpan
@@ -14,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import kotlinx.android.synthetic.main.item_task.view.*
-
+import java.text.SimpleDateFormat
 
 
 class TasksAdapter(
@@ -39,11 +40,20 @@ class TasksAdapter(
 
                 taskFinishedCheck.isChecked = task.isFinished
 
-                /*val dateCreateAt = Date.from(task.createdAt)
-                val formatter = SimpleDateFormat("EEE, MMM d, ''yy")
-                val formattedDate = formatter.format(dateCreatAt)
-                "EEE, MMM d, ''yy" -> Wed, Jul 4, '01*/
-                cardDateCreated.text = "Created on: ${task.createdAt.toString()}"
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                // val formatter = SimpleDateFormat( "EEE, MMM d, ''yy")
+                val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
+                val createAt = formatter.format(parser.parse(task.createdAt.toString()))
+
+                cardDateCreated.text = "${createAt}"
+
+                if (task.isHighPriority) {
+                    cardPriorityText.text = "Priority: High"
+                    cardPriorityText.setTextColor(Color.parseColor("#ff0000"))
+                } else {
+                    cardPriorityText.text = "Priority: Normal"
+                    cardPriorityText.setTextColor(Color.parseColor("#04993f"))
+                }
 
                 if (task.isFinished) {
                     applyStrikeThrough(cardContentText, task.content)
