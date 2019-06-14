@@ -1,6 +1,7 @@
 package io.keepcoding.tareas.presentation.tasks
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.Spanned
@@ -9,11 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
+import io.keepcoding.tareas.presentation.add_task.AddTaskActivity
+import io.keepcoding.tareas.presentation.detail_task.DetailActivity
+import kotlinx.android.synthetic.main.item_task.*
 import kotlinx.android.synthetic.main.item_task.view.*
 import java.text.SimpleDateFormat
 
@@ -35,7 +40,7 @@ class TasksAdapter(
     inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(task: Task) {
-            with (itemView) {
+            with(itemView) {
                 cardContentText.text = task.content
 
                 taskFinishedCheck.isChecked = task.isFinished
@@ -44,7 +49,6 @@ class TasksAdapter(
                 // val formatter = SimpleDateFormat( "EEE, MMM d, ''yy")
                 val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
                 val createAt = formatter.format(parser.parse(task.createdAt.toString()))
-
                 cardDateCreated.text = "${createAt}"
 
                 if (task.isHighPriority) {
@@ -69,6 +73,15 @@ class TasksAdapter(
                     } else {
                         removeStrikeThrough(cardContentText, task.content, animate = true)
                     }
+                }
+
+                setOnClickListener {
+                    task.let {
+                        val intent = Intent(this.context, DetailActivity()::class.java)
+                        intent.putExtra("id", it.id)
+                        startActivity(this.context, intent, null)
+                    }
+
                 }
             }
         }
@@ -96,7 +109,7 @@ class TasksAdapter(
             val span = SpannableString(content)
             val spanStrike = StrikethroughSpan()
 
-            if(animate) {
+            if (animate) {
                 ValueAnimator.ofInt(content.length, 0).apply {
                     duration = 300
                     interpolator = FastOutSlowInInterpolator()

@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import io.keepcoding.tareas.presentation.add_task.AddTaskActivity
+import io.keepcoding.tareas.presentation.detail_task.DetailActivity
 import io.keepcoding.tareas.presentation.tasks.TasksFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_task.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpFragment(savedInstanceState: Bundle?) {
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, TasksFragment())
@@ -36,7 +38,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
         }
+
     }
-
-
 }
+
+
+
