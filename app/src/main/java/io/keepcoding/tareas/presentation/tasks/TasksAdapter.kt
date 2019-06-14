@@ -24,7 +24,8 @@ import java.text.SimpleDateFormat
 
 
 class TasksAdapter(
-    private val onFinished: (task: Task) -> Unit
+    private val onFinished: (task: Task) -> Unit,
+    private val listener: (task: Task) -> Unit
 ) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(TaskDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -77,11 +78,8 @@ class TasksAdapter(
 
                 setOnClickListener {
                     task.let {
-                        val intent = Intent(this.context, DetailActivity()::class.java)
-                        // intent.putExtra("id", it.id)
-                        startActivity(this.context, intent, null)
+                        listener.invoke(it)
                     }
-
                 }
             }
         }

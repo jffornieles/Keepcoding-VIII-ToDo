@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +21,14 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class TasksFragment : Fragment() {
 
     val adapter: TasksAdapter by lazy {
-        TasksAdapter {
-            tasksViewModel.toggleFinished(it)
-        }
+        TasksAdapter (
+            {
+                tasksViewModel.toggleFinished(it)
+            },
+            {
+                launchTaskDetail(it)
+            }
+        )
     }
 
     val tasksViewModel: TasksViewModel by viewModel()
@@ -70,6 +74,12 @@ class TasksFragment : Fragment() {
 
     private fun onTasksLoaded(tasks: List<Task>) {
         adapter.submitList(tasks)
+    }
+
+    fun launchTaskDetail(task: Task) {
+        val intent = Intent(context, DetailActivity()::class.java)
+        intent.putExtra("id", task.id)
+        startActivity(intent)
     }
 
 }

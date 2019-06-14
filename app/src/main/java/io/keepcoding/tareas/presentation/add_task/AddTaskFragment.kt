@@ -9,7 +9,6 @@ import io.keepcoding.tareas.R
 import io.keepcoding.util.extensions.consume
 import io.keepcoding.util.extensions.observe
 import kotlinx.android.synthetic.main.fragment_add_task.*
-import kotlinx.android.synthetic.main.item_task.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddTaskFragment : Fragment() {

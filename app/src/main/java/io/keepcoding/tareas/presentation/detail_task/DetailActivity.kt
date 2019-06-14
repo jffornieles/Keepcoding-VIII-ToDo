@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import io.keepcoding.tareas.R
-import io.keepcoding.tareas.presentation.add_task.AddTaskFragment
 import io.keepcoding.tareas.presentation.detail_task.ui.detail.DetailFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,16 +16,16 @@ class DetailActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
 
-            /*val fragment = DetailFragment()
-            val id = intent.getStringExtra("id")
+            val fragment = DetailFragment()
+            val id = intent.getLongExtra("id", 0)
 
             val args = Bundle()
-            args.putString("id", id)
+            args.putLong("id", id)
 
-            fragment.arguments = args*/
+            fragment.arguments = args
 
             setUpToolbar()
-            setUpFragment(savedInstanceState)
+            setUpFragment(savedInstanceState, fragment)
 
         }
     }
@@ -41,11 +40,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpFragment(savedInstanceState: Bundle?) {
+    private fun setUpFragment(savedInstanceState: Bundle?, fragment: DetailFragment) {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, DetailFragment())
+                .replace(R.id.fragmentContainer, fragment)
                 .commit()
         }
     }
