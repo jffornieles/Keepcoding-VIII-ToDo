@@ -78,7 +78,7 @@ class TasksAdapter(
                 setOnClickListener {
                     task.let {
                         val intent = Intent(this.context, DetailActivity()::class.java)
-                        intent.putExtra("id", it.id)
+                        // intent.putExtra("id", it.id)
                         startActivity(this.context, intent, null)
                     }
 

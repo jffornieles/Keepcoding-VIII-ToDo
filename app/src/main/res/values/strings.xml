@@ -2,4 +2,6 @@
     <string name="app_name">Tareas</string>
 
     <string name="add_task_title">Añadir tarea</string>
+
+    <string name="detail_task_title">Detalle de la tarea</string>
 </resources>
