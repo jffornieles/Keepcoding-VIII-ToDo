@@ -8,6 +8,7 @@ import io.keepcoding.tareas.data.repository.mapper.TaskEntityMapper
 import io.keepcoding.tareas.data.repository.mapper.TaskMapper
 import io.keepcoding.tareas.domain.TaskRepository
 import io.keepcoding.tareas.presentation.add_task.AddTaskViewModel
+import io.keepcoding.tareas.presentation.detail_task.ui.detail.DetailViewModel
 import io.keepcoding.tareas.presentation.tasks.TasksViewModel
 import io.keepcoding.util.AppDispatcherFactory
 import io.keepcoding.util.DispatcherFactory
@@ -52,6 +53,10 @@ val appModule = module {
 
     viewModel {
         AddTaskViewModel(get(), get())
+    }
+
+    viewModel {
+        DetailViewModel(get(), get())
     }
 
 }

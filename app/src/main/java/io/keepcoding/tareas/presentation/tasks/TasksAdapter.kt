@@ -50,7 +50,7 @@ class TasksAdapter(
                 // val formatter = SimpleDateFormat( "EEE, MMM d, ''yy")
                 val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
                 val createAt = formatter.format(parser.parse(task.createdAt.toString()))
-                cardDateCreated.text = "${createAt}"
+                cardDateCreated.text = createAt
 
                 if (task.isHighPriority) {
                     cardPriorityText.text = "Priority: High"

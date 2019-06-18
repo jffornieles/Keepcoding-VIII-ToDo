@@ -44,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
+                .replace(R.id.fragmentContainerDetail, fragment)
                 .commit()
         }
     }
