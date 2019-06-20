@@ -9,24 +9,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
+import io.keepcoding.util.extensions.consume
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
 import kotlinx.android.synthetic.main.detail_fragment.*
+import kotlinx.android.synthetic.main.fragment_add_task.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 
-class DetailFragment : DialogFragment() {
-
-//    companion object {
-//        const val PARAM_TASK = "task"
-//
-//        fun newInstance(task: Task): DetailFragment =
-//            DetailFragment().apply {
-//                arguments = Bundle().apply {
-//                    putParcelable(PARAM_TASK, task)
-//                }
-//            }
-//    }
+class DetailFragment : Fragment() {
 
     val detailViewModel: DetailViewModel by viewModel()
     var task: Task? = null
@@ -42,8 +34,7 @@ class DetailFragment : DialogFragment() {
             it.getParcelable("task")
         }
         if (task == null) {
-            // dismiss()
-            Log.d("ToDo","Task is Null!!")
+             // TODO
         }
         bindState()
         bindActions()
@@ -57,30 +48,42 @@ class DetailFragment : DialogFragment() {
             observe(tasksState) {
                 showDetails(it)
             }
+            observe(closeAction) {
+                it.consume {
+                    onClose()
+                }
+            }
         }
     }
 
     private fun bindActions() {
         imageEdit.setOnClickListener {
 
-
             checkPriorityDetail.isEnabled = true
             contentTaskText.isEnabled = true
             checkTaskCompleted.isEnabled = true
             buttonSave.isEnabled = true
+            contentTaskText.selectAll()
 
-            detailViewModel.updateTask(task!!)
         }
 
         imageDelete.setOnClickListener {
             detailViewModel.deleteTask(task!!)
+        }
+
+        buttonSave.setOnClickListener {
+            val taskContent = contentTaskText.text.toString()
+            val taskIsPriority =  checkPriorityDetail.isChecked
+            val taskIsCompleted = checkTaskCompleted.isChecked
+            detailViewModel.updateTask(task!!.id, taskContent, task!!.createdAt, taskIsPriority, taskIsCompleted)
         }
     }
 
     private fun showDetails(task: Task?) {
 
         task?.let {
-            contentTaskText.hint = it.content!!
+            //contentTaskText.hint = it.content!!
+            contentTaskText.setText(it.content)
 
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
@@ -100,11 +103,14 @@ class DetailFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        // val id = arguments?.getLong("id", 0)
         detailViewModel.loadTask(task?.id!!)
     }
 
     private fun onLoadingState(isLoading: Boolean) {
         tasksDetailLoading.setVisible(isLoading)
+    }
+
+    private fun onClose() {
+        requireActivity().finish()
     }
 }

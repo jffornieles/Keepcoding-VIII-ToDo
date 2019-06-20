@@ -5,6 +5,7 @@ import io.keepcoding.tareas.domain.TaskRepository
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.tareas.presentation.BaseViewModel
 import io.keepcoding.util.DispatcherFactory
+import io.keepcoding.util.Event
 import io.keepcoding.util.extensions.call
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,6 +17,7 @@ class DetailViewModel(
 
     val isLoadingState = MutableLiveData<Boolean>()
     val tasksState = MutableLiveData<Task>()
+    val closeAction = MutableLiveData<Event<Unit>>()
 
     fun loadTask(id: Long) {
         launch {
@@ -32,12 +34,19 @@ class DetailViewModel(
         launch {
             withContext(dispatcherFactory.getIO()) { taskRepository.deleteTask(task)}
         }
+        closeAction.call()
     }
 
-    fun updateTask(task: Task) {
-        launch {
-            withContext(dispatcherFactory.getIO()) { taskRepository.updateTask(task)}
+    fun updateTask(id: Long, content: String, createdAt: org.threeten.bp.Instant, isPriority: Boolean, isCompleted: Boolean) {
+
+        if (!content.isNotEmpty()) {
+            return
         }
+
+        launch {
+            withContext(dispatcherFactory.getIO()) { taskRepository.updateTask(Task(id, content, createdAt, isPriority, isCompleted))}
+        }
+        closeAction.call()
     }
 
     private fun showLoading(isLoading: Boolean) {
