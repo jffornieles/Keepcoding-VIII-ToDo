@@ -4,6 +4,7 @@ import io.keepcoding.tareas.domain.TaskRepository
 import io.keepcoding.tareas.domain.model.Task
 import kotlinx.coroutines.runBlocking
 import org.threeten.bp.Instant
+import java.util.*
 
 class FakeRepository : TaskRepository {
 
@@ -35,5 +36,10 @@ class FakeRepository : TaskRepository {
     override suspend fun updateTask(task: Task) {
         tasks[task.id] = task
     }
+
+    override suspend fun deleteTask(task: Task) {
+        tasks[task.id] = task
+    }
+
 
 }

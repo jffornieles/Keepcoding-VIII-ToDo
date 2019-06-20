@@ -54,10 +54,10 @@ class TasksAdapter(
 
                 if (task.isHighPriority) {
                     cardPriorityText.text = "Priority: High"
-                    cardPriorityText.setTextColor(Color.parseColor("#ff0000"))
+                    cardPriorityText.setTextColor(Color.RED) //parseColor("#ff0000"))
                 } else {
                     cardPriorityText.text = "Priority: Normal"
-                    cardPriorityText.setTextColor(Color.parseColor("#04993f"))
+                    cardPriorityText.setTextColor(Color.GREEN) //parseColor("#04993f"))
                 }
 
                 if (task.isFinished) {

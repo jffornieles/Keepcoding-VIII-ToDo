@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import io.keepcoding.tareas.R
+import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.tareas.presentation.detail_task.ui.detail.DetailFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,10 +18,11 @@ class DetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
 
             val fragment = DetailFragment()
-            val id = intent.getLongExtra("id", 0)
-
+            //val id = intent.getLongExtra("id", 0)
+            val task = intent.getParcelableExtra<Task>("task")
             val args = Bundle()
-            args.putLong("id", id)
+            //args.putLong("id", id)
+            args.putParcelable("task", task)
 
             fragment.arguments = args
 

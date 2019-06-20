@@ -28,6 +28,18 @@ class DetailViewModel(
         }
     }
 
+    fun deleteTask(task: Task) {
+        launch {
+            withContext(dispatcherFactory.getIO()) { taskRepository.deleteTask(task)}
+        }
+    }
+
+    fun updateTask(task: Task) {
+        launch {
+            withContext(dispatcherFactory.getIO()) { taskRepository.updateTask(task)}
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
         isLoadingState.value = isLoading
     }

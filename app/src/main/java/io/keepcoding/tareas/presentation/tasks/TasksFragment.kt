@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.tareas.presentation.detail_task.DetailActivity
+import io.keepcoding.tareas.presentation.detail_task.ui.detail.DetailFragment
 import io.keepcoding.util.EqualSpacingItemDecoration
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
@@ -78,7 +81,10 @@ class TasksFragment : Fragment() {
 
     fun launchTaskDetail(task: Task) {
         val intent = Intent(context, DetailActivity()::class.java)
-        intent.putExtra("id", task.id)
+        intent.putExtra("task", task)
+        //intent.getParcelableExtra<Task>("task")
+        //val fragment = DetailFragment.newInstance(task)
+        //fragment.show(childFragmentManager, null)
         startActivity(intent)
     }
 

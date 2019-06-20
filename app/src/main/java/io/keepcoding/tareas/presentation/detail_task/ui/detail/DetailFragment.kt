@@ -1,25 +1,35 @@
 package io.keepcoding.tareas.presentation.detail_task.ui.detail
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
 import kotlinx.android.synthetic.main.detail_fragment.*
-import kotlinx.android.synthetic.main.item_task.*
-import kotlinx.android.synthetic.main.item_task.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 
-class DetailFragment : Fragment() {
+class DetailFragment : DialogFragment() {
+
+//    companion object {
+//        const val PARAM_TASK = "task"
+//
+//        fun newInstance(task: Task): DetailFragment =
+//            DetailFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable(PARAM_TASK, task)
+//                }
+//            }
+//    }
 
     val detailViewModel: DetailViewModel by viewModel()
+    var task: Task? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -28,7 +38,15 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        task = arguments?.let {
+            it.getParcelable("task")
+        }
+        if (task == null) {
+            // dismiss()
+            Log.d("ToDo","Task is Null!!")
+        }
         bindState()
+        bindActions()
     }
 
     private fun bindState() {
@@ -42,33 +60,48 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun showDetails(task: Task?) {
+    private fun bindActions() {
+        imageEdit.setOnClickListener {
 
-        contentTaskText.text = task?.content!!
 
-        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
-        val createAt = formatter.format(parser.parse(task.createdAt.toString()))
-        dateTaskText.text = createAt
+            checkPriorityDetail.isEnabled = true
+            contentTaskText.isEnabled = true
+            checkTaskCompleted.isEnabled = true
+            buttonSave.isEnabled = true
 
-        if (task.isHighPriority) {
-            priorityTex.text = "Priority: High"
-            priorityTex.setTextColor(Color.parseColor("#ff0000"))
-        } else {
-            priorityTex.text = "Priority: Normal"
-            priorityTex.setTextColor(Color.parseColor("#04993f"))
+            detailViewModel.updateTask(task!!)
         }
 
-        if (task.isFinished) {
-            checkBox.isChecked = true
+        imageDelete.setOnClickListener {
+            detailViewModel.deleteTask(task!!)
+        }
+    }
+
+    private fun showDetails(task: Task?) {
+
+        task?.let {
+            contentTaskText.hint = it.content!!
+
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
+            val createAt = formatter.format(parser.parse(it.createdAt.toString()))
+            dateTaskText.text = createAt
+
+            if (it.isHighPriority) {
+                checkPriorityDetail.isChecked = true
+            }
+
+            if (it.isFinished) {
+                checkTaskCompleted.isChecked = true
+            }
         }
 
     }
 
     override fun onResume() {
         super.onResume()
-        val id = arguments?.getLong("id", 0)
-        detailViewModel.loadTask(id!!)
+        // val id = arguments?.getLong("id", 0)
+        detailViewModel.loadTask(task?.id!!)
     }
 
     private fun onLoadingState(isLoading: Boolean) {
