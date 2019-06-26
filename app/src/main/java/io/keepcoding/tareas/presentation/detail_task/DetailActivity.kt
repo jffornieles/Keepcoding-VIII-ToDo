@@ -18,10 +18,8 @@ class DetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
 
             val fragment = DetailFragment()
-            //val id = intent.getLongExtra("id", 0)
             val task = intent.getParcelableExtra<Task>("task")
             val args = Bundle()
-            //args.putLong("id", id)
             args.putParcelable("task", task)
 
             fragment.arguments = args

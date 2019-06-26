@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        style="@style/TaskCard"
-        android:id="@+id/taskCard"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?selectableItemBackground">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/taskCard"
+    style="@style/TaskCard"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,19 +50,33 @@
             app:layout_constraintStart_toStartOf="@+id/cardContentText"
             app:layout_constraintTop_toBottomOf="@+id/cardContentText" />
 
-        <TextView
-            android:id="@+id/cardPriorityText"
-            android:layout_width="149dp"
-            android:layout_height="23dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="TextView"
-            android:textAlignment="textEnd"
-            android:textSize="12sp"
-            android:textStyle="italic"
+        <ImageView
+            android:id="@+id/buttonEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonDelete"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+            app:layout_constraintTop_toTopOf="@+id/buttonDelete"
+            app:srcCompat="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/buttonDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
             app:layout_constraintEnd_toEndOf="@+id/cardContentText"
-            app:layout_constraintStart_toEndOf="@+id/cardDateCreated"
-            app:layout_constraintTop_toBottomOf="@+id/cardContentText" />
+            app:layout_constraintTop_toBottomOf="@+id/cardContentText"
+            app:srcCompat="@drawable/ic_delete" />
+
+        <TextView
+                android:text="TextView"
+                android:layout_width="113dp"
+                android:layout_height="20dp"
+                android:id="@+id/textViewPriority" app:layout_constraintEnd_toEndOf="@+id/cardContentText"
+                app:layout_constraintBottom_toTopOf="@+id/cardContentText" android:textAlignment="textEnd"
+                android:layout_marginBottom="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

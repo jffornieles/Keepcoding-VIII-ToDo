@@ -3,7 +3,6 @@ package io.keepcoding.tareas.domain.model
 import android.os.Parcel
 import android.os.Parcelable
 import org.threeten.bp.Instant
-import java.util.*
 
 data class Task(
     val id: Long,

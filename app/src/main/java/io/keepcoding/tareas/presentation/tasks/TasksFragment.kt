@@ -16,6 +16,7 @@ import io.keepcoding.util.EqualSpacingItemDecoration
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
 import kotlinx.android.synthetic.main.fragment_tasks.*
+import kotlinx.android.synthetic.main.item_task.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class TasksFragment : Fragment() {
@@ -27,7 +28,10 @@ class TasksFragment : Fragment() {
             },
             {
                 launchTaskDetail(it)
-            }
+            },
+                {
+                    tasksViewModel.deleteTask(it)
+                }
         )
     }
 
@@ -60,6 +64,9 @@ class TasksFragment : Fragment() {
             observe(tasksState) {
                 onTasksLoaded(it)
             }
+            observe(deleteState) {
+                onTaskDeleted(it)
+            }
         }
     }
 
@@ -74,6 +81,11 @@ class TasksFragment : Fragment() {
 
     private fun onTasksLoaded(tasks: List<Task>) {
         adapter.submitList(tasks)
+    }
+
+    private fun onTaskDeleted(task: List<Task>) {
+        adapter.submitList(task)
+
     }
 
     fun launchTaskDetail(task: Task) {

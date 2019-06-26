@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.ListAdapter
@@ -18,14 +19,18 @@ import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.tareas.presentation.add_task.AddTaskActivity
 import io.keepcoding.tareas.presentation.detail_task.DetailActivity
+import io.keepcoding.tareas.presentation.detail_task.ui.detail.DetailViewModel
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.item_task.*
 import kotlinx.android.synthetic.main.item_task.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 
 
 class TasksAdapter(
     private val onFinished: (task: Task) -> Unit,
-    private val listener: (task: Task) -> Unit
+    private val listener: (task: Task) -> Unit,
+    private val deleteTask: (task: Task) -> Unit
 ) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(TaskDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -42,22 +47,22 @@ class TasksAdapter(
 
         fun bind(task: Task) {
             with(itemView) {
+
                 cardContentText.text = task.content
 
                 taskFinishedCheck.isChecked = task.isFinished
 
                 val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                // val formatter = SimpleDateFormat( "EEE, MMM d, ''yy")
                 val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
                 val createAt = formatter.format(parser.parse(task.createdAt.toString()))
                 cardDateCreated.text = createAt
 
                 if (task.isHighPriority) {
-                    cardPriorityText.text = "Priority: High"
-                    cardPriorityText.setTextColor(Color.RED) //parseColor("#ff0000"))
+                    textViewPriority.text = "High priority"
+                    textViewPriority.setTextColor(Color.RED)
                 } else {
-                    cardPriorityText.text = "Priority: Normal"
-                    cardPriorityText.setTextColor(Color.GREEN) //parseColor("#04993f"))
+                    textViewPriority.text = "Normal priority"
+                    textViewPriority.setTextColor(Color.GREEN)
                 }
 
                 if (task.isFinished) {
@@ -77,10 +82,26 @@ class TasksAdapter(
                 }
 
                 setOnClickListener {
-                    task.let {
-                        listener.invoke(it)
-                    }
+                    listener(task)
                 }
+
+                buttonEdit.setOnClickListener {
+                    listener(task)
+                }
+
+                buttonDelete.setOnClickListener {
+                    AlertDialog.Builder(it.context)
+                            .setTitle("Delete")
+                            .setMessage("Delete task? ")
+                            .setPositiveButton("Yes") { _, _ ->
+                                deleteTask(task)
+                            }
+                            .setNegativeButton("No", null)
+                            .create()
+                            .show()
+
+                }
+
             }
         }
 

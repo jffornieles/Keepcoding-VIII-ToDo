@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import io.keepcoding.tareas.R
@@ -68,14 +69,33 @@ class DetailFragment : Fragment() {
         }
 
         imageDelete.setOnClickListener {
-            detailViewModel.deleteTask(task!!)
+            AlertDialog.Builder(activity!!)
+                    .setTitle("Delete")
+                    .setMessage("Delete task? ")
+                    .setPositiveButton("Yes") { _, _ ->
+                        detailViewModel.deleteTask(task!!)
+                    }
+                    .setNegativeButton("No", null)
+                    .create()
+                    .show()
+
         }
 
         buttonSave.setOnClickListener {
-            val taskContent = contentTaskText.text.toString()
-            val taskIsPriority =  checkPriorityDetail.isChecked
-            val taskIsCompleted = checkTaskCompleted.isChecked
-            detailViewModel.updateTask(task!!.id, taskContent, task!!.createdAt, taskIsPriority, taskIsCompleted)
+            AlertDialog.Builder(activity!!)
+                    .setTitle("Edit")
+                    .setMessage("Edit task? ")
+                    .setPositiveButton("Yes") { _, _ ->
+                        val taskContent = contentTaskText.text.toString()
+                        val taskIsPriority =  checkPriorityDetail.isChecked
+                        val taskIsCompleted = checkTaskCompleted.isChecked
+                        detailViewModel.updateTask(task!!.id, taskContent, task!!.createdAt, taskIsPriority, taskIsCompleted)
+                    }
+                    .setNegativeButton("No", null)
+                    .create()
+                    .show()
+
+
         }
     }
 
