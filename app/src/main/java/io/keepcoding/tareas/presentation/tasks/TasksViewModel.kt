@@ -16,15 +16,15 @@ class TasksViewModel(
     private val dispatcherFactory: DispatcherFactory
 ): BaseViewModel(dispatcherFactory) {
 
-    val tasksState = MutableLiveData<List<Task>>()
+    val tasksState = MutableLiveData<MutableList<Task>>()
     val isLoadingState = MutableLiveData<Boolean>()
-    val deleteState = MutableLiveData<List<Task>>()
+    val deleteState = MutableLiveData<Int>()
 
     fun loadTasks() {
         launch {
             showLoading(true)
 
-            val result = withContext(dispatcherFactory.getIO()) { taskRepository.getAll() }
+            val result = withContext(dispatcherFactory.getIO()) { taskRepository.getAll().toMutableList() }
             tasksState.value = result
 
             showLoading(false)
@@ -46,10 +46,9 @@ class TasksViewModel(
     fun deleteTask(task: Task) {
         launch {
 
-
             withContext(dispatcherFactory.getIO()) { taskRepository.deleteTask(task) }
-            val result = withContext(dispatcherFactory.getIO()) { taskRepository.getAll() }
-            deleteState.value = result
+            deleteState.value = tasksState.value?.indexOf(task)
+            tasksState.value?.remove(task)
         }
 
     }

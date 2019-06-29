@@ -79,13 +79,13 @@ class TasksFragment : Fragment() {
         tasksLoading.setVisible(isLoading)
     }
 
-    private fun onTasksLoaded(tasks: List<Task>) {
+    private fun onTasksLoaded(tasks: MutableList<Task>) {
         adapter.submitList(tasks)
     }
 
-    private fun onTaskDeleted(task: List<Task>) {
-        adapter.submitList(task)
-
+    private fun onTaskDeleted(position: Int) {
+        //adapter.submitList(task)
+        adapter.notifyItemRemoved(position)
     }
 
     fun launchTaskDetail(task: Task) {
