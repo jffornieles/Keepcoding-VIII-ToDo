@@ -102,7 +102,6 @@ class DetailFragment : Fragment() {
     private fun showDetails(task: Task?) {
 
         task?.let {
-            //contentTaskText.hint = it.content!!
             contentTaskText.setText(it.content)
 
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
