@@ -4,4 +4,6 @@
     <string name="add_task_title">Añadir tarea</string>
 
     <string name="detail_task_title">Detalle de la tarea</string>
+
+    <string name="edit_task_title">Editar tarea</string>
 </resources>

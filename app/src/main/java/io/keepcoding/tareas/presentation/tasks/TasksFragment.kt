@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.tareas.presentation.detail_task.DetailActivity
+import io.keepcoding.tareas.presentation.edit_task.EditTaskActivity
 import io.keepcoding.util.EqualSpacingItemDecoration
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
@@ -31,6 +32,10 @@ class TasksFragment : Fragment() {
             },
                 {
                     tasksViewModel.deleteTask(it)
+                },
+
+                {
+                    launchTaskEdit(it)
                 }
         )
     }
@@ -84,12 +89,17 @@ class TasksFragment : Fragment() {
     }
 
     private fun onTaskDeleted(position: Int) {
-        //adapter.submitList(task)
         adapter.notifyItemRemoved(position)
     }
 
     fun launchTaskDetail(task: Task) {
         val intent = Intent(context, DetailActivity()::class.java)
+        intent.putExtra("task", task)
+        startActivity(intent)
+    }
+
+    fun launchTaskEdit(task: Task) {
+        val intent = Intent(context, EditTaskActivity()::class.java)
         intent.putExtra("task", task)
         startActivity(intent)
     }

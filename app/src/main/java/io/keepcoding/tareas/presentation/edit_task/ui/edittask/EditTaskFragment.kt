@@ -1,32 +1,28 @@
-package io.keepcoding.tareas.presentation.detail_task.ui.detail
+package io.keepcoding.tareas.presentation.edit_task.ui.edittask
 
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import io.keepcoding.tareas.R
 import io.keepcoding.tareas.domain.model.Task
 import io.keepcoding.util.extensions.consume
 import io.keepcoding.util.extensions.observe
 import io.keepcoding.util.extensions.setVisible
 import kotlinx.android.synthetic.main.detail_fragment.*
-import kotlinx.android.synthetic.main.fragment_add_task.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 
-class DetailFragment : Fragment() {
+class EditTaskFragment : Fragment() {
 
-    val detailViewModel: DetailViewModel by viewModel()
+    val editViewModel: EditTaskViewModel by viewModel()
     var task: Task? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.detail_fragment, container, false)
+        return inflater.inflate(R.layout.edit_task_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,7 +36,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun bindState() {
-        with (detailViewModel) {
+        with (editViewModel) {
             observe(isLoadingState) {
                 onLoadingState(it)
             }
@@ -56,28 +52,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun bindActions() {
-        imageEdit.setOnClickListener {
-
-            checkPriorityDetail.isEnabled = true
-            contentTaskText.isEnabled = true
-            checkTaskCompleted.isEnabled = true
-            buttonSave.isEnabled = true
-            contentTaskText.selectAll()
-
-        }
-
-        imageDelete.setOnClickListener {
-            AlertDialog.Builder(activity!!)
-                    .setTitle("Delete")
-                    .setMessage("Delete task? ")
-                    .setPositiveButton("Yes") { _, _ ->
-                        detailViewModel.deleteTask(task!!)
-                    }
-                    .setNegativeButton("No", null)
-                    .create()
-                    .show()
-
-        }
 
         buttonSave.setOnClickListener {
             AlertDialog.Builder(activity!!)
@@ -87,7 +61,7 @@ class DetailFragment : Fragment() {
                         val taskContent = contentTaskText.text.toString()
                         val taskIsPriority =  checkPriorityDetail.isChecked
                         val taskIsCompleted = checkTaskCompleted.isChecked
-                        detailViewModel.updateTask(task!!.id, taskContent, task!!.createdAt, taskIsPriority, taskIsCompleted)
+                        editViewModel.updateTask(task!!.id, taskContent, task!!.createdAt, taskIsPriority, taskIsCompleted)
                     }
                     .setNegativeButton("No", null)
                     .create()
@@ -101,6 +75,7 @@ class DetailFragment : Fragment() {
 
         task?.let {
             contentTaskText.setText(it.content)
+            contentTaskText.selectAll()
 
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm a")
@@ -120,7 +95,7 @@ class DetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        detailViewModel.loadTask(task?.id!!)
+        editViewModel.loadTask(task?.id!!)
     }
 
     private fun onLoadingState(isLoading: Boolean) {
@@ -131,3 +106,4 @@ class DetailFragment : Fragment() {
         requireActivity().finish()
     }
 }
+

@@ -30,7 +30,8 @@ import java.text.SimpleDateFormat
 class TasksAdapter(
     private val onFinished: (task: Task) -> Unit,
     private val listener: (task: Task) -> Unit,
-    private val deleteTask: (task: Task) -> Unit
+    private val deleteTask: (task: Task) -> Unit,
+    private val listenerEdit: (task: Task) -> Unit
 ) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(TaskDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -86,7 +87,7 @@ class TasksAdapter(
                 }
 
                 buttonEdit.setOnClickListener {
-                    listener(task)
+                    listenerEdit(task)
                 }
 
                 buttonDelete.setOnClickListener {
